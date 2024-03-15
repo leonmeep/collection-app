@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('quotes', function (Blueprint $table) {
             $table->id();
             $table->string('character', 50);
-            $table->string('content', 1000);
+            $table->string('words', 1000);
             $table->string('episode_name', 50)->nullable();
             $table->integer('episode_number')->nullable();
             $table->integer('series_number')->nullable();
