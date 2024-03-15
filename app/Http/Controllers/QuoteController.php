@@ -48,13 +48,6 @@ class QuoteController extends Controller
 
     public function update(int $id, Request $request)
     {
-        $request->validate([
-            'character' => 'required|max:50|string',
-            'words' => 'required|max:1000|string',
-            'episode_name' => 'max:50|string',
-            'episode_number' => 'integer',
-            'series_number' => 'integer',
-        ]);
         $quote = Quote::find($id);
 
         $quote->character = $request->character;
@@ -69,10 +62,11 @@ class QuoteController extends Controller
     {
         $quote = Quote::find($id);
 
-        if (! $quote->save()) {
-            return response('DOH! could not delete quote');
+        if (! $quote) {
+            return response('DOH! could not delete quote, invalid id. Nice try Brian Mcgee.');
         }
 
+        $quote->delete();
         return response('WOO HOO! Quote successfully deleted');
     }
 }

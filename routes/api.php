@@ -13,4 +13,5 @@ Route::controller(QuoteController::class)->group(function () {
     Route::get('/quotes/{id}', 'getSingle');
     Route::post('/quotes', 'create');
     Route::put('/quotes/{id}', 'update');
+    Route::delete('/quotes/{id}', 'delete');
 });
