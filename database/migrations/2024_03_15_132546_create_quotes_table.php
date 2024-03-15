@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('character', 50);
             $table->string('content', 1000);
             $table->string('episode_name', 50)->nullable();
-            $table->integer('episode_number', 2)->nullable();
-            $table->integer('series_number', 2)->nullable();
+            $table->integer('episode_number')->nullable();
+            $table->integer('series_number')->nullable();
             $table->timestamps();
         });
     }
