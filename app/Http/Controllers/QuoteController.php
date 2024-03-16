@@ -48,13 +48,30 @@ class QuoteController extends Controller
 
     public function update(int $id, Request $request)
     {
+        $request->validate([
+            'character' => 'required|max:50|string',
+            'words' => 'required|max:1000|string',
+            'episode_name' => 'max:50|string',
+            'episode_number' => '',
+            'series_number' => '',
+        ]);
+
         $quote = Quote::find($id);
+        if (!$quote) {
+            return response('DOH! Could not update quote');
+        }
+
 
         $quote->character = $request->character;
         $quote->words = $request->words;
         $quote->episode_name = $request->episode_name;
         $quote->episode_number = $request->episode_number;
         $quote->series_number = $request->series_number;
+
+        if (! $quote->save()) {
+            return response('DOH! Could not update quote');
+        }
+        return response('WOO HOO! The quote had been updated.');
 
     }
 
