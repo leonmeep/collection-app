@@ -7,19 +7,31 @@ use Illuminate\Http\Request;
 
 class QuoteController extends Controller
 {
-    public function getAll()
+    public function getAll(Request $request)
     {
-        $quotes = Quote::all();
+        $search = $request->search;
+        $hidden = ['created_at', 'updated_at', 'episode_name', 'episode_number', 'series_number'];
 
-        return $quotes;
+        if ($search) {
+            return response()->json([
+                'message' => 'Quote returned.',
+                'data' => Quote::where('character', 'LIKE', "%$search%")->get()->makehidden($hidden),
+            ], 201);
+        }
+
+        return response()->json([
+            'message' => 'Quote returned.',
+            'data' => Quote::all()->makeHidden($hidden),
+        ], 201);
 
     }
 
     public function getSingle(int $id)
     {
-        $quote = Quote::find($id);
-
-        return $quote;
+        return response()->json([
+            'message' => 'Quote returned.',
+            'data' => Quote::find($id),
+        ], 201);
     }
 
     public function create(Request $request)
@@ -28,11 +40,12 @@ class QuoteController extends Controller
             'character' => 'required|max:50|string',
             'words' => 'required|max:1000|string',
             'episode_name' => 'max:50|string',
-            'episode_number' => '',
-            'series_number' => '',
+            'episode_number' => 'integer',
+            'series_number' => 'integer',
         ]);
 
         $quote = new Quote();
+
         $quote->character = $request->character;
         $quote->words = $request->words;
         $quote->episode_name = $request->episode_name;
@@ -40,10 +53,14 @@ class QuoteController extends Controller
         $quote->series_number = $request->series_number;
 
         if (! $quote->save()) {
-            return response('DOH! Could not create quote');
+            return response()->json([
+                'message' => 'DOH! Could not create quote.',
+            ], 500);
         }
 
-        return response('WOO HOO! New quote created.');
+        return response()->json([
+            'message' => 'WOO HOO! New quote created.',
+        ], 201);
     }
 
     public function update(int $id, Request $request)
@@ -57,10 +74,11 @@ class QuoteController extends Controller
         ]);
 
         $quote = Quote::find($id);
-        if (!$quote) {
-            return response('DOH! Could not update quote');
+        if (! $quote) {
+            return response()->json([
+                'message' => 'DOH! Quote id is invalid.',
+            ], 404);
         }
-
 
         $quote->character = $request->character;
         $quote->words = $request->words;
@@ -69,9 +87,14 @@ class QuoteController extends Controller
         $quote->series_number = $request->series_number;
 
         if (! $quote->save()) {
-            return response('DOH! Could not update quote');
+            return response()->json([
+                'message' => 'DOH! Quote update could not be saved.',
+            ], 500);
         }
-        return response('WOO HOO! The quote had been updated.');
+
+        return response()->json([
+            'message' => 'WOO HOO! The quote had been updated.',
+        ], 201);
 
     }
 
@@ -80,10 +103,15 @@ class QuoteController extends Controller
         $quote = Quote::find($id);
 
         if (! $quote) {
-            return response('DOH! could not delete quote, invalid id. Nice try Brian Mcgee.');
+            return response()->json([
+                'message' => 'DOH! could not delete quote, invalid id. Nice try Brian Mcgee.',
+            ], 400);
         }
 
         $quote->delete();
-        return response('WOO HOO! Quote successfully deleted');
+
+        return response()->json([
+            'message' => 'WOO HOO! Quote successfully deleted.',
+        ], 201);
     }
 }
