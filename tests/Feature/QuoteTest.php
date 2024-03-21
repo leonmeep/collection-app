@@ -22,9 +22,12 @@ class QuoteTest extends TestCase
                 $json->hasAll(['message', 'data'])
                     ->has('data', 3, function (AssertableJson $json)
                     {
-                        $json->hasAll(['id', 'character', 'words', 'episode_name',
-                            'episode_number', 'series_number']);
-
+                        $json->hasAll(['id', 'character', 'words'])
+                        ->whereAllType([
+                            'id' => 'integer',
+                            'character' => 'string',
+                            'words' => 'string'
+                        ]);
 
                     });
             });
