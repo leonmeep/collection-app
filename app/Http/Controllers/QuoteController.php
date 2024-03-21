@@ -28,9 +28,11 @@ class QuoteController extends Controller
 
     public function getSingle(int $id)
     {
+        $hidden = ['created_at', 'updated_at'];
+
         return response()->json([
             'message' => 'Quote returned.',
-            'data' => Quote::find($id),
+            'data' => Quote::find($id)->makeHidden($hidden),
         ], 201);
     }
 

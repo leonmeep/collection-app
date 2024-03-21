@@ -32,4 +32,23 @@ class QuoteTest extends TestCase
                     });
             });
     }
+
+    public function test_get_single_quote()
+    {
+        Quote::factory()->create();
+
+        $response = $this->getJson('/api/quotes/{id}');
+
+        $response->assertJson(201)
+            ->assertJson(function (AssertableJson $json)
+            {
+
+            });
+    }
+
+
+
+
+
+
 }
