@@ -70,20 +70,20 @@ class QuoteTest extends TestCase
     public function test_updateQuote_success(): void
     {
         Quote::factory()->create();
-        $response = $this->putJson('/api/quotes/update/1',[
+        $response = $this->putJson('/api/quotes/update/1', [
             'character' => 'testing',
-            'words' => 'also testing'
+            'words' => 'also testing',
         ]);
 
         $response->assertStatus(201)
-            ->assertJson(function (AssertableJson $json){
-               $json->hasAll(['message'])
-                ->whereType('message', 'string');
+            ->assertJson(function (AssertableJson $json) {
+                $json->hasAll(['message'])
+                    ->whereType('message', 'string');
             });
 
         $this->assertDatabaseHas('quotes', [
             'character' => 'testing',
-            'words' => 'also testing'
+            'words' => 'also testing',
         ]);
     }
 
@@ -100,19 +100,18 @@ class QuoteTest extends TestCase
         Quote::factory()->create();
         $response = $this->postJson('/api/quotes/create', [
             'character' => 'testing',
-            'words' => 'also testing'
+            'words' => 'also testing',
         ]);
 
         $response->assertStatus(201)
-            ->assertJson(function (AssertableJson $json)
-            {
+            ->assertJson(function (AssertableJson $json) {
                 $json->hasAll(['message'])
                     ->whereType('message', 'string');
             });
 
         $this->assertDatabaseHas('quotes', [
             'character' => 'testing',
-            'words' => 'also testing'
+            'words' => 'also testing',
         ]);
     }
 
@@ -122,13 +121,12 @@ class QuoteTest extends TestCase
         $response = $this->deleteJson('/api/quotes/delete/1');
 
         $response->assertStatus(201)
-            ->assertJson(function (AssertableJson $json)
-            {
+            ->assertJson(function (AssertableJson $json) {
                 $json->hasAll(['message'])->whereType('message', 'string');
             });
         $this->assertDatabaseMissing('quotes', [
             'character' => 'testing',
-            'words' => 'also testing'
+            'words' => 'also testing',
         ]);
     }
 }
