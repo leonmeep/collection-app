@@ -11,7 +11,7 @@ Route::get('/user', function (Request $request) {
 Route::controller(QuoteController::class)->group(function () {
     Route::get('/quotes', 'getAll');
     Route::get('/quotes/{id}', 'getSingle');
-    Route::post('/quotes', 'create');
-    Route::put('/quotes/{id}', 'update');
-    Route::delete('/quotes/{id}', 'delete');
+    Route::post('/quotes/create', 'create');
+    Route::put('/quotes/update/{id}', 'update');
+    Route::delete('/quotes/delete/{id}', 'delete');
 });

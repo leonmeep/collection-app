@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Quote extends Model
 {
     use HasFactory;
+
+    public $hidden = ['created_at', 'updated_at'];
 }

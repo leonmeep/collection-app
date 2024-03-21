@@ -39,9 +39,25 @@ class QuoteTest extends TestCase
 
         $response = $this->getJson('/api/quotes/{id}');
 
-        $response->assertJson(201)
+        $response->assertStatus(201)
             ->assertJson(function (AssertableJson $json)
             {
+                $json->hasAll(['message', 'data'])
+                    ->whereType('message', 'string')
+                    ->has('data', function (AssertableJson $json)
+                    {
+                        $json->hasAll(['id', 'character', 'words', 'episode_name', 'episode_number', 'series_number'])
+                            ->whereAllType([
+                                'id' => 'integer',
+                                'character' => 'string',
+                                'words' => 'string',
+                                'episode_name' => 'string',
+                                'episode_number' => 'integer',
+                                'series_number' => 'integer'
+                            ]);
+
+                    });
+
 
             });
     }
