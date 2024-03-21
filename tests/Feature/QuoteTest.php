@@ -37,7 +37,7 @@ class QuoteTest extends TestCase
     {
         Quote::factory()->create();
 
-        $response = $this->getJson('/api/quotes/{id}');
+        $response = $this->getJson('/api/quotes/1');
 
         $response->assertStatus(201)
             ->assertJson(function (AssertableJson $json)
